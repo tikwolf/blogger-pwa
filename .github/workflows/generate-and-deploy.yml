@@ -6,7 +6,7 @@ on:
   repository_dispatch:
 
 jobs:
-  generate:
+  deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -49,3 +49,39 @@ jobs:
           commit_user_name: "github-actions[bot]"
           commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
           commit_author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+
+  purge:
+    name: Purge JsDelivr files
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - name: Install curl
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl
+      - name: Send purge requests to JsDelivr for changed bucket files
+        run: |
+          if git rev-parse HEAD^ >/dev/null 2>&1; then
+              changed_bucket_files=$(git diff --name-only HEAD^ HEAD -- bucket/)
+          else
+              changed_bucket_files=$(git ls-tree -r --name-only HEAD bucket/)
+          fi
+
+          if [ -z "$changed_bucket_files" ]; then
+            echo "No bucket files changed. Skipping purge."
+            exit 0
+          fi
+
+          for file in $changed_bucket_files; do
+            url="https://purge.jsdelivr.net/gh/${{ github.repository }}@${{ github.head_ref || github.ref_name }}/$file"
+            echo "Purging $url"
+            curl -sS "$url" &
+          done
+
+          wait
+          echo -e "\nAll purge requests for changed bucket files have been sent."
