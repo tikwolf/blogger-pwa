@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "blogger-pwa",
+  "name": "tikwolf-pwa",
   "compatibility_date": "2026-05-10",
   "assets": {
     "directory": "bucket",
