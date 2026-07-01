@@ -50,10 +50,10 @@ export default defineConfig({
   /* OneSignal سنفعّله في المرحلة 5 لاحقاً */
   oneSignal: {
     enabled: false,
-    appId: "********-****-****-****-************",
+    appId: '********-****-****-****-************',
     allowLocalhostAsSecureOrigin: true,
   },
 
   /* بما أنك تستخدم Cloudflare Workers على نفس الدومين */
-  origin: "https://tikwolf.com",
+  origin: 'https://tikwolf.com',
 });
