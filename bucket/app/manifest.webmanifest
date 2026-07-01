@@ -1,11 +1,11 @@
 {
-  "name": "My Blog",
-  "short_name": "My Blog",
-  "description": "My blog description goes here...",
-  "dir": "auto",
-  "lang": "en-US",
-  "background_color": "#fff",
-  "theme_color": "#fff",
+  "name": "TikWolf",
+  "short_name": "TikWolf",
+  "description": "منصة TikWolf للتغذية الرياضية، المكملات، الوصفات الصحية، وبرامج التدريب",
+  "dir": "rtl",
+  "lang": "ar",
+  "background_color": "#0f0f10",
+  "theme_color": "#0f0f10",
   "display": "standalone",
   "orientation": "natural",
   "scope": "/",
@@ -121,10 +121,10 @@
           "sizes": "96x96"
         }
       ],
-      "name": "Shortcut 1",
-      "short_name": "Shortcut 1",
-      "description": "Shortcut 1 description goes here...",
-      "url": "/search/label/shortcut-1?utm_source=homescreen"
+      "name": "الوصفات",
+      "short_name": "وصفات",
+      "description": "وصفات صحية عالية البروتين",
+      "url": "/search/label/وصفات?utm_source=homescreen"
     },
     {
       "icons": [
@@ -133,10 +133,34 @@
           "sizes": "96x96"
         }
       ],
-      "name": "Shortcut 2",
-      "short_name": "Shortcut 2",
-      "description": "Shortcut 2 description goes here...",
-      "url": "/search/label/shortcut-2?utm_source=homescreen"
+      "name": "برامج تدريب",
+      "short_name": "تدريب",
+      "description": "برامج تدريبية متكاملة",
+      "url": "/search/label/برامج تدريب?utm_source=homescreen"
+    },
+    {
+      "icons": [
+        {
+          "src": "icons/android-chrome-96x96.png",
+          "sizes": "96x96"
+        }
+      ],
+      "name": "دليل التمارين",
+      "short_name": "التمارين",
+      "description": "مكتبة التمارين الشاملة وطريقة الأداء الصحيح",
+      "url": "/search/label/دليل التمارين?utm_source=homescreen"
+    },
+    {
+      "icons": [
+        {
+          "src": "icons/android-chrome-96x96.png",
+          "sizes": "96x96"
+        }
+      ],
+      "name": "دليل الحاسبات",
+      "short_name": "الحاسبات",
+      "description": "BMI، السعرات، الماكروز، البروتين وأكثر",
+      "url": "/p/tools-calculators.html?utm_source=homescreen"
     }
   ]
 }

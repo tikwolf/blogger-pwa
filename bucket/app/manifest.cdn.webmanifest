@@ -1,15 +1,15 @@
 {
-  "name": "My Blog",
-  "short_name": "My Blog",
-  "description": "My blog description goes here...",
-  "dir": "auto",
-  "lang": "en-US",
-  "background_color": "#fff",
-  "theme_color": "#fff",
+  "name": "TikWolf",
+  "short_name": "TikWolf",
+  "description": "منصة TikWolf للتغذية الرياضية، المكملات، الوصفات الصحية، وبرامج التدريب",
+  "dir": "rtl",
+  "lang": "ar",
+  "background_color": "#0f0f10",
+  "theme_color": "#0f0f10",
   "display": "standalone",
   "orientation": "natural",
-  "scope": "https://blogger-pwa.blogspot.com/",
-  "start_url": "https://blogger-pwa.blogspot.com/?utm_source=homescreen",
+  "scope": "https://tikwolf.com/",
+  "start_url": "https://tikwolf.com/?utm_source=homescreen",
   "id": "/",
   "prefer_related_applications": false,
   "icons": [
@@ -121,10 +121,10 @@
           "sizes": "96x96"
         }
       ],
-      "name": "Shortcut 1",
-      "short_name": "Shortcut 1",
-      "description": "Shortcut 1 description goes here...",
-      "url": "https://blogger-pwa.blogspot.com/search/label/shortcut-1?utm_source=homescreen"
+      "name": "الوصفات",
+      "short_name": "وصفات",
+      "description": "وصفات صحية عالية البروتين",
+      "url": "https://tikwolf.com/search/label/%D9%88%D8%B5%D9%81%D8%A7%D8%AA?utm_source=homescreen"
     },
     {
       "icons": [
@@ -133,10 +133,34 @@
           "sizes": "96x96"
         }
       ],
-      "name": "Shortcut 2",
-      "short_name": "Shortcut 2",
-      "description": "Shortcut 2 description goes here...",
-      "url": "https://blogger-pwa.blogspot.com/search/label/shortcut-2?utm_source=homescreen"
+      "name": "برامج تدريب",
+      "short_name": "تدريب",
+      "description": "برامج تدريبية متكاملة",
+      "url": "https://tikwolf.com/search/label/%D8%A8%D8%B1%D8%A7%D9%85%D8%AC%20%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8?utm_source=homescreen"
+    },
+    {
+      "icons": [
+        {
+          "src": "icons/android-chrome-96x96.png",
+          "sizes": "96x96"
+        }
+      ],
+      "name": "دليل التمارين",
+      "short_name": "التمارين",
+      "description": "مكتبة التمارين الشاملة وطريقة الأداء الصحيح",
+      "url": "https://tikwolf.com/search/label/%D8%AF%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D8%AA%D9%85%D8%A7%D8%B1%D9%8A%D9%86?utm_source=homescreen"
+    },
+    {
+      "icons": [
+        {
+          "src": "icons/android-chrome-96x96.png",
+          "sizes": "96x96"
+        }
+      ],
+      "name": "دليل الحاسبات",
+      "short_name": "الحاسبات",
+      "description": "BMI، السعرات، الماكروز، البروتين وأكثر",
+      "url": "https://tikwolf.com/p/tools-calculators.html?utm_source=homescreen"
     }
   ]
 }
