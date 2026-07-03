@@ -48,10 +48,10 @@ export default defineConfig({
   },
 
   oneSignal: {
-    enabled: false,
-    appId: '********-****-****-****-************',
-    allowLocalhostAsSecureOrigin: true,
-  },
+  enabled: true,
+  appId: 'bc311607-b25d-489b-81d5-85008bfd8bed',
+  allowLocalhostAsSecureOrigin: true,
+},
 
   origin: 'https://tikwolf.com',
 });
