@@ -1,2 +1,5 @@
 /app/serviceworker.js
   Service-Worker-Allowed: /
+
+/app/onesignalworker.js
+  Service-Worker-Allowed: /
