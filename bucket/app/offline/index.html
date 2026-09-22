@@ -176,7 +176,9 @@
 
   <script>
     (() => {
-      const language = (document.documentElement.lang || navigator.language || 'en').toLowerCase().split('-')[0];
+      const documentLanguage = (document.documentElement.lang || '').toLowerCase().split('-')[0];
+      const browserLanguage = (navigator.languages?.[0] || navigator.language || '').toLowerCase().split('-')[0];
+      const language = (documentLanguage && documentLanguage !== 'en' ? documentLanguage : browserLanguage || documentLanguage || 'en');
       const rtlLanguages = new Set(['ar', 'fa', 'he', 'ur']);
       const translations = {
         ar: { title: 'أنت غير متصل بالإنترنت', description: 'هذه الصفحة غير متاحة حاليًا. تحقق من اتصالك وحاول مرة أخرى.', retry: 'إعادة المحاولة', status: 'سنحاول مجددًا عند عودة الاتصال.' },
