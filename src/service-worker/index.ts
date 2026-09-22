@@ -72,9 +72,14 @@ registerRoute(
   }),
 );
 
-/** Cache visited images, while keeping a strict upper bound on storage. */
+/**
+ * Cache visited images from the site and trusted external image hosts too.
+ * Blogger commonly serves media from a different origin, so restricting this
+ * route to same-origin requests would make many cached pages look incomplete
+ * while offline. The bounded cache and 30-day expiry limit storage growth.
+ */
 registerRoute(
-  ({ sameOrigin, request }) => sameOrigin && request.destination === 'image',
+  ({ request }) => request.destination === 'image',
   new CacheFirst({
     cacheName: 'site-images-cache',
     plugins: [
