@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   validate:
-    name: Lint and typecheck
+    name: Lint, typecheck, and generate
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -43,3 +43,13 @@ jobs:
 
       - name: Run TypeScript checks
         run: pnpm run check:types
+
+      - name: Generate PWA artifacts
+        run: pnpm run generate
+
+      - name: Verify generated PWA artifacts
+        run: |
+          test -s bucket/app/serviceworker.js
+          test -s bucket/app/offline/index.html
+          test -s bucket/app/manifest.webmanifest
+          grep -q "offline/index.html" bucket/app/serviceworker.js
