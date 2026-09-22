@@ -1,160 +1,174 @@
-export function getOfflineHTML(title = 'No internet connection', headMetaTags = ''): string {
+export function getOfflineHTML(title = 'Offline', headMetaTags = ''): string {
   return `<!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr">
 
 <head>
   <meta charset="UTF-8" />
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" name="viewport" />
+  <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport" />
   <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+  <meta name="color-scheme" content="light dark" />
   <title>${title}</title>
 
   ${headMetaTags}
 
-  <!--[ Styles ]-->
   <style>
-    *,
-    ::after,
-    ::before {
-      box-sizing: border-box;
+    :root {
+      color-scheme: light dark;
+      --offline-bg: #f6f7fb;
+      --offline-surface: #ffffff;
+      --offline-text: #20232a;
+      --offline-muted: #697386;
+      --offline-border: rgba(32, 35, 42, 0.12);
+      --offline-accent: #2563eb;
+      --offline-accent-text: #ffffff;
     }
 
-    /* Content */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --offline-bg: #151619;
+        --offline-surface: #22242a;
+        --offline-text: #f4f5f7;
+        --offline-muted: #b4b8c2;
+        --offline-border: rgba(255, 255, 255, 0.14);
+        --offline-accent: #8b7cf6;
+        --offline-accent-text: #101116;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
     body {
       margin: 0;
-      background: #fafafa;
-      color: #1f1f1f;
-      font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
-      font-weight: 400;
-      -webkit-tap-highlight-color: transparent;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    body:focus {
-      outline: none !important;
-    }
-
-    .main-wrapper {
-      min-width: 100vw;
+      min-width: 320px;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 15px;
+      min-height: 100dvh;
+      background: var(--offline-bg);
+      color: var(--offline-text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .container {
-      position: relative;
-      overflow: hidden;
+    .offline-wrapper {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .offline-card {
+      width: min(100%, 440px);
+      padding: clamp(28px, 7vw, 48px) 24px 28px;
       text-align: center;
-      padding: 15px;
-      border-radius: 12px;
-      background: #fff;
-      border: 1px solid #ebebeb;
+      background: var(--offline-surface);
+      border: 1px solid var(--offline-border);
+      border-radius: 24px;
+      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.08);
     }
 
-    .no-internet-icon {
-      padding: 30px;
+    .offline-icon {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--offline-bg);
+      color: var(--offline-muted);
     }
 
-    .no-internet-header {
-      font-weight: 600;
-      font-size: 1.3rem;
+    .offline-icon svg { width: 42px; height: 42px; }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.25rem, 4vw, 1.6rem);
+      line-height: 1.4;
+      font-weight: 750;
     }
 
-    .no-internet-description {
-      font-size: 16px;
-      line-height: 1.4em;
-      padding-top: 20px;
-      font-weight: 400;
-      opacity: 0.8;
+    p {
+      margin: 14px auto 0;
+      max-width: 32ch;
+      color: var(--offline-muted);
+      font-size: 1rem;
+      line-height: 1.7;
     }
 
-    .reload-container {
+    .offline-actions {
       display: flex;
       justify-content: center;
-      align-items: center;
-      padding: 30px;
+      margin-top: 28px;
     }
 
-    .reload-button {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 66px;
-      height: 66px;
-      background-color: #fff;
-      outline: none;
-      border: 1px solid #ebebeb;
-      border-radius: 690px;
+    button {
+      min-height: 48px;
+      padding: 0 24px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--offline-accent);
+      color: var(--offline-accent-text);
+      font: inherit;
+      font-weight: 700;
       cursor: pointer;
     }
 
-    .reload-button:hover {
-      background-color: #fafafa;
+    button:focus-visible {
+      outline: 3px solid var(--offline-accent);
+      outline-offset: 4px;
     }
 
-    .icon {
-      content: "";
-      width: 25px;
-      height: 25px;
-      display: inline-block;
-    }
-
-    .icon-lg {
-      content: "";
-      width: 50px;
-      height: 50px;
-      display: inline-block;
-    }
-
-    .icon.reload {
-      background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239dabc0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='23 4 23 10 17 10'/><path d='M20.49 15a9 9 0 1 1-2.12-9.36L23 10'/></svg>") center / 25px no-repeat;
-    }
-
-    .icon-lg.wifi-off {
-      background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231f1f1f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='1' y1='1' x2='23' y2='23'/><path d='M16.72 11.06A10.94 10.94 0 0 1 19 12.55'/><path d='M5 12.55a10.94 10.94 0 0 1 5.17-2.39'/><path d='M10.71 5.05A16 16 0 0 1 22.58 9'/><path d='M1.42 9a15.91 15.91 0 0 1 4.7-2.88'/><path d='M8.53 16.11a6 6 0 0 1 6.95 0'/><line x1='12' y1='20' x2='12.01' y2='20'/></svg>") center / 50px no-repeat;
-    }
-
-    @media screen and (min-width: 401px) {
-      .container {
-        min-width: 400px;
-      }
-    }
-
-    @media screen and (max-width: 400px) {
-      .container {
-        width: 100%;
-      }
+    .offline-status {
+      margin-top: 18px;
+      font-size: 0.875rem;
+      color: var(--offline-muted);
     }
   </style>
 </head>
 
 <body>
-  <div class="main-wrapper notranslate">
-    <div class="container">
-      <div class="no-internet-icon">
-        <i class="icon-lg wifi-off"></i>
+  <main class="offline-wrapper">
+    <section class="offline-card" aria-labelledby="offline-title">
+      <div class="offline-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 1l22 22" />
+          <path d="M16.7 11.1A10.8 10.8 0 0 1 19 12.6" />
+          <path d="M5 12.6a10.8 10.8 0 0 1 5.2-2.4" />
+          <path d="M8.5 16.1a6 6 0 0 1 7 0" />
+          <path d="M12 20h.01" />
+        </svg>
       </div>
-      <div class="no-internet-header">Something went wrong!</div>
-
-      <div class="reload-container">
-        <button class="reload-button">
-          <i class="icon reload"></i>
-        </button>
+      <h1 id="offline-title" data-i18n="title">You are offline</h1>
+      <p data-i18n="description">This page is not available right now. Check your connection and try again.</p>
+      <div class="offline-actions">
+        <button type="button" class="reload-button" data-i18n="retry">Try again</button>
       </div>
-    </div>
-  </div>
+      <div class="offline-status" role="status" aria-live="polite" data-i18n="status">We will retry when your connection returns.</div>
+    </section>
+  </main>
 
-  <!--[ Script ]-->
   <script>
-    document.querySelector(".reload-button")
-      .addEventListener("click", () => window.location.reload());
-    window.addEventListener("online", () => window.location.reload(), { once: true });
+    (() => {
+      const language = (document.documentElement.lang || navigator.language || 'en').toLowerCase().split('-')[0];
+      const rtlLanguages = new Set(['ar', 'fa', 'he', 'ur']);
+      const translations = {
+        ar: { title: 'أنت غير متصل بالإنترنت', description: 'هذه الصفحة غير متاحة حاليًا. تحقق من اتصالك وحاول مرة أخرى.', retry: 'إعادة المحاولة', status: 'سنحاول مجددًا عند عودة الاتصال.' },
+        en: { title: 'You are offline', description: 'This page is not available right now. Check your connection and try again.', retry: 'Try again', status: 'We will retry when your connection returns.' },
+        fr: { title: 'Vous êtes hors ligne', description: 'Cette page est indisponible. Vérifiez votre connexion puis réessayez.', retry: 'Réessayer', status: 'Une nouvelle tentative sera effectuée au retour de la connexion.' },
+        es: { title: 'Estás sin conexión', description: 'Esta página no está disponible. Comprueba tu conexión e inténtalo de nuevo.', retry: 'Reintentar', status: 'Lo intentaremos de nuevo cuando vuelva la conexión.' },
+        de: { title: 'Du bist offline', description: 'Diese Seite ist momentan nicht verfügbar. Prüfe deine Verbindung und versuche es erneut.', retry: 'Erneut versuchen', status: 'Wir versuchen es erneut, sobald die Verbindung zurück ist.' },
+        tr: { title: 'Çevrim dışısınız', description: 'Bu sayfa şu anda kullanılamıyor. Bağlantınızı kontrol edip tekrar deneyin.', retry: 'Tekrar dene', status: 'Bağlantı geri geldiğinde tekrar deneyeceğiz.' }
+      };
+      const text = translations[language] || translations.en;
+      document.documentElement.lang = language;
+      document.documentElement.dir = rtlLanguages.has(language) ? 'rtl' : 'ltr';
+      document.querySelectorAll('[data-i18n]').forEach((element) => {
+        const key = element.getAttribute('data-i18n');
+        if (key && text[key]) element.textContent = text[key];
+      });
+      const reload = () => window.location.reload();
+      document.querySelector('.reload-button')?.addEventListener('click', reload);
+      window.addEventListener('online', reload, { once: true });
+    })();
   </script>
 </body>
 
