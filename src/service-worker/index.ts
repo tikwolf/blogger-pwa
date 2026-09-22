@@ -57,8 +57,7 @@ registerRoute(
 
 /** Keep same-origin scripts and styles usable after a successful visit. */
 registerRoute(
-  ({ sameOrigin, request }) =>
-    sameOrigin && (request.destination === 'script' || request.destination === 'style'),
+  ({ sameOrigin, request }) => sameOrigin && (request.destination === 'script' || request.destination === 'style'),
   new StaleWhileRevalidate({
     cacheName: 'site-assets-cache',
     plugins: [
@@ -95,8 +94,7 @@ registerRoute(
 );
 
 registerRoute(
-  ({ request, url }) =>
-    request.destination === 'style' && /^https:\/\/fonts\.googleapis\.com$/i.test(url.origin),
+  ({ request, url }) => request.destination === 'style' && /^https:\/\/fonts\.googleapis\.com$/i.test(url.origin),
   new CacheFirst({
     cacheName: 'google-fonts-cache',
     plugins: [
@@ -111,8 +109,7 @@ registerRoute(
 );
 
 registerRoute(
-  ({ request, url }) =>
-    request.destination === 'font' && /^https:\/\/fonts\.gstatic\.com$/i.test(url.origin),
+  ({ request, url }) => request.destination === 'font' && /^https:\/\/fonts\.gstatic\.com$/i.test(url.origin),
   new CacheFirst({
     cacheName: 'gstatic-fonts-cache',
     plugins: [
