@@ -73,7 +73,8 @@ registerRoute(
 
 /** Cache the existing community SDK files without replacing the site's UI. */
 registerRoute(
-  ({ request, url }) => url.origin === 'https://tikwolf-community-sdk1.pages.dev' && (request.destination === 'script' || request.destination === 'style'),
+  ({ request, url }) =>
+    url.origin === 'https://tikwolf-community-sdk1.pages.dev' && (request.destination === 'script' || request.destination === 'style'),
   new StaleWhileRevalidate({
     cacheName: 'community-sdk-cache',
     plugins: [
@@ -146,7 +147,6 @@ registerRoute(
     plugins: [
       runtimeCacheableResponse,
       new ExpirationPlugin({
-        cacheName: 'gstatic-fonts-cache',
         maxEntries: 40,
         maxAgeSeconds: 60 * 60 * 24 * 365,
         purgeOnQuotaError: true,
