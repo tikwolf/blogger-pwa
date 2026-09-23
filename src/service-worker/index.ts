@@ -57,8 +57,7 @@ registerRoute(
 
 /** Keep same-origin scripts and styles usable after a successful visit. */
 registerRoute(
-  ({ sameOrigin, request }) =>
-    sameOrigin && (request.destination === 'script' || request.destination === 'style'),
+  ({ sameOrigin, request }) => sameOrigin && (request.destination === 'script' || request.destination === 'style'),
   new StaleWhileRevalidate({
     cacheName: 'site-assets-cache',
     plugins: [
@@ -74,9 +73,7 @@ registerRoute(
 
 /** Cache the existing community SDK files without replacing the site's UI. */
 registerRoute(
-  ({ request, url }) =>
-    url.origin === 'https://tikwolf-community-sdk1.pages.dev' &&
-    (request.destination === 'script' || request.destination === 'style'),
+  ({ request, url }) => url.origin === 'https://tikwolf-community-sdk1.pages.dev' && (request.destination === 'script' || request.destination === 'style'),
   new StaleWhileRevalidate({
     cacheName: 'community-sdk-cache',
     plugins: [
@@ -96,10 +93,7 @@ registerRoute(
  * Only the read-only post view is cached; mutations and comments are excluded.
  */
 registerRoute(
-  ({ request, url }) =>
-    request.method === 'GET' &&
-    url.hostname.endsWith('.supabase.co') &&
-    url.pathname === '/rest/v1/post_view',
+  ({ request, url }) => request.method === 'GET' && url.hostname.endsWith('.supabase.co') && url.pathname === '/rest/v1/post_view',
   new NetworkFirst({
     cacheName: 'community-posts-cache',
     networkTimeoutSeconds: 4,
@@ -131,9 +125,7 @@ registerRoute(
 );
 
 registerRoute(
-  ({ request, url }) =>
-    request.destination === 'style' &&
-    /^https:\/\/fonts\.googleapis\.com$/i.test(url.origin),
+  ({ request, url }) => request.destination === 'style' && /^https:\/\/fonts\.googleapis\.com$/i.test(url.origin),
   new CacheFirst({
     cacheName: 'google-fonts-cache',
     plugins: [
@@ -148,9 +140,7 @@ registerRoute(
 );
 
 registerRoute(
-  ({ request, url }) =>
-    request.destination === 'font' &&
-    /^https:\/\/fonts\.gstatic\.com$/i.test(url.origin),
+  ({ request, url }) => request.destination === 'font' && /^https:\/\/fonts\.gstatic\.com$/i.test(url.origin),
   new CacheFirst({
     cacheName: 'gstatic-fonts-cache',
     plugins: [
