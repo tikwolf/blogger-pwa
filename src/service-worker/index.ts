@@ -71,12 +71,49 @@ registerRoute(
   }),
 );
 
+/** Cache the existing community SDK files without replacing the site's UI. */
+registerRoute(
+  ({ request, url }) =>
+    url.origin === 'https://tikwolf-community-sdk1.pages.dev' &&
+    (request.destination === 'script' || request.destination === 'style'),
+  new StaleWhileRevalidate({
+    cacheName: 'community-sdk-cache',
+    plugins: [
+      runtimeCacheableResponse,
+      new ExpirationPlugin({
+        maxEntries: 20,
+        maxAgeSeconds: 60 * 60 * 24 * 30,
+        purgeOnQuotaError: true,
+      }),
+    ],
+  }),
+);
+
 /**
- * Cache visited images from the site and trusted external image hosts too.
- * Blogger commonly serves media from a different origin, so restricting this
- * route to same-origin requests would make many cached pages look incomplete
- * while offline. The bounded cache and 30-day expiry limit storage growth.
+ * Keep the community post view available offline. The query string is part of
+ * the cache key, so pagination and filters retain their original behavior.
+ * Only the read-only post view is cached; mutations and comments are excluded.
  */
+registerRoute(
+  ({ request, url }) =>
+    request.method === 'GET' &&
+    url.hostname.endsWith('.supabase.co') &&
+    url.pathname === '/rest/v1/post_view',
+  new NetworkFirst({
+    cacheName: 'community-posts-cache',
+    networkTimeoutSeconds: 4,
+    plugins: [
+      runtimeCacheableResponse,
+      new ExpirationPlugin({
+        maxEntries: 80,
+        maxAgeSeconds: 60 * 60 * 24 * 7,
+        purgeOnQuotaError: true,
+      }),
+    ],
+  }),
+);
+
+/** Cache visited images from the site and trusted external image hosts too. */
 registerRoute(
   ({ request }) => request.destination === 'image',
   new CacheFirst({
@@ -114,6 +151,7 @@ registerRoute(
     plugins: [
       runtimeCacheableResponse,
       new ExpirationPlugin({
+        cacheName: 'gstatic-fonts-cache',
         maxEntries: 40,
         maxAgeSeconds: 60 * 60 * 24 * 365,
         purgeOnQuotaError: true,
