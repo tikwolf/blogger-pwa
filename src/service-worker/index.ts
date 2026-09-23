@@ -73,7 +73,9 @@ registerRoute(
 
 /** Cache the existing community SDK files without replacing the site's UI. */
 registerRoute(
-  ({ request, url }) => url.origin === 'https://tikwolf-community-sdk1.pages.dev' && (request.destination === 'script' || request.destination === 'style'),
+  ({ request, url }) =>
+    url.origin === 'https://tikwolf-community-sdk1.pages.dev' &&
+    (request.destination === 'script' || request.destination === 'style'),
   new StaleWhileRevalidate({
     cacheName: 'community-sdk-cache',
     plugins: [
@@ -93,7 +95,10 @@ registerRoute(
  * Only the read-only post view is cached; mutations and comments are excluded.
  */
 registerRoute(
-  ({ request, url }) => request.method === 'GET' && url.hostname.endsWith('.supabase.co') && url.pathname === '/rest/v1/post_view',
+  ({ request, url }) =>
+    request.method === 'GET' &&
+    url.hostname.endsWith('.supabase.co') &&
+    url.pathname === '/rest/v1/post_view',
   new NetworkFirst({
     cacheName: 'community-posts-cache',
     networkTimeoutSeconds: 4,
