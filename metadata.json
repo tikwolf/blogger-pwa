@@ -1,6 +1,6 @@
 {
   "github": {
     "repository": "tikwolf/blogger-pwa",
-    "branch": "main"
+    "branch": "feat/offline-translation-cache"
   }
 }
