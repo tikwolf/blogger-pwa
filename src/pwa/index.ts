@@ -1,5 +1,6 @@
 import { lazy } from '@deox/utils/lazy';
 import { Workbox } from 'workbox-window';
+import { initializeOfflineTranslationCache } from './translation-cache';
 
 declare global {
   interface Window {
@@ -32,78 +33,59 @@ const config = JSON.parse(__OPTIONS__) as PWAOptions;
 function groupLog(title: string | string[], logs: (unknown | unknown[])[]) {
   if (config.logs) {
     console.groupCollapsed.apply(console, Array.isArray(title) ? title : [title]);
-    for (const log of logs) {
-      console.log.apply(console, Array.isArray(log) ? log : [log]);
-    }
+    for (const log of logs) console.log.apply(console, Array.isArray(log) ? log : [log]);
     console.groupEnd();
   }
 }
 
-if ('serviceWorker' in navigator) {
-  /** Register Workbox Service Worker */
-  const workbox = new Workbox(config.serviceWorker.source, {
-    scope: config.serviceWorker.scope,
-  });
+function initializePageEnhancements(): void {
+  initializeOfflineTranslationCache();
+}
 
-  workbox
-    .register({ immediate: true })
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializePageEnhancements, { once: true });
+} else {
+  initializePageEnhancements();
+}
+
+if ('serviceWorker' in navigator) {
+  const workbox = new Workbox(config.serviceWorker.source, { scope: config.serviceWorker.scope });
+
+  workbox.register({ immediate: true })
     .then((registration) => {
       const logs: string[][] = [];
-      if (registration?.scope) {
-        logs.push([`Scope: ${registration.scope}`]);
-      }
-      if (registration?.active?.scriptURL) {
-        logs.push([`Script:  ${registration.active.scriptURL}`]);
-      }
+      if (registration?.scope) logs.push([`Scope: ${registration.scope}`]);
+      if (registration?.active?.scriptURL) logs.push([`Script:  ${registration.active.scriptURL}`]);
       logs.push(['Build by: Fineshop Design (https://fineshopdesign.com)']);
-
       groupLog(['%c[sw] Registered successfully', 'color: green'], logs);
     })
-    .catch((error) => {
-      groupLog(['%c[sw] Registration failed', 'color: red'], ['Error:', error]);
-    });
+    .catch((error) => groupLog(['%c[sw] Registration failed', 'color: red'], ['Error:', error]));
 
-  /** Helper function to initialize OneSignal */
-  // biome-ignore lint/suspicious/noExplicitAny: we needed to use any here
+  // biome-ignore lint/suspicious/noExplicitAny: OneSignal exposes a runtime SDK without stable local types.
   const initializeOneSignal = (oneSignalConfig: any) => (OneSignal: any) => {
     OneSignal.init(oneSignalConfig)
       .then(() => {
         const logs = [['Version:', OneSignal.VERSION]];
-
-        const config = OneSignal.config;
+        const sdkConfig = OneSignal.config;
         const subscription = OneSignal.User.PushSubscription;
         const notification = OneSignal.Notifications;
         const origin = window.location.origin;
 
-        if (config) {
-          logs.push(['App ID:', config.appId]);
-          logs.push(['Origin:', config.origin]);
-          logs.push(['Site Name:', config.siteName]);
-
-          const userConfig = config.userConfig;
-
+        if (sdkConfig) {
+          logs.push(['App ID:', sdkConfig.appId], ['Origin:', sdkConfig.origin], ['Site Name:', sdkConfig.siteName]);
+          const userConfig = sdkConfig.userConfig;
           if (userConfig) {
-            if (userConfig.serviceWorkerParam) {
-              logs.push(['Scope:', origin + userConfig.serviceWorkerParam.scope]);
-            }
+            if (userConfig.serviceWorkerParam) logs.push(['Scope:', origin + userConfig.serviceWorkerParam.scope]);
             logs.push(['Script:', origin + userConfig.path + userConfig.serviceWorkerPath]);
           }
         }
-
-        if (subscription.id) {
-          logs.push(['Subscription ID:', subscription.id]);
-        }
-
+        if (subscription.id) logs.push(['Subscription ID:', subscription.id]);
         logs.push(['Notification:', notification.permissionNative]);
-
         groupLog(['%c[onesignal] Initialized successfully', 'color: green'], logs);
       })
-      .catch((error: unknown) => {
-        groupLog(['%c[onesignal] Initialization failed', 'color: red'], ['Error:', error]);
-      });
+      .catch((error: unknown) => groupLog(['%c[onesignal] Initialization failed', 'color: red'], ['Error:', error]));
   };
 
-  /** Initialize OneSignal if enabled */
   if (config.oneSignal.enabled) {
     const oneSignalConfig = {
       appId: config.oneSignal.appId,
@@ -112,22 +94,15 @@ if ('serviceWorker' in navigator) {
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     window.OneSignalDeferred.push(initializeOneSignal(oneSignalConfig));
 
-    /**
-     * Load OneSignal SDK only if required
-     * Also lazy-loads javascript for better performance
-     */
     if (typeof OneSignal === 'undefined') {
       lazy.then(() => {
         const script = document.createElement('script');
         script.src = config.oneSignal.sdk;
         script.async = true;
         script.defer = true;
-        const firstScript = document.getElementsByTagName('script')[0] as HTMLScriptElement | undefined;
-        if (firstScript?.parentNode) {
-          firstScript.parentNode.insertBefore(script, firstScript);
-        } else {
-          document.head.appendChild(script);
-        }
+        const firstScript = document.getElementsByTagName('script')[0];
+        if (firstScript?.parentNode) firstScript.parentNode.insertBefore(script, firstScript);
+        else document.head.appendChild(script);
       });
     }
   }
