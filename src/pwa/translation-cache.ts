@@ -6,11 +6,22 @@ const MAX_TEXT_LENGTH = 200_000;
 const TRANSLATED_CLASSES = ['translated-ltr', 'translated-rtl'] as const;
 
 type TextEntry = { path: string; index: number; source: string; translated: string };
-type TranslationSnapshot = { version: number; page: string; language: string; direction: 'ltr' | 'rtl' | 'auto'; entries: TextEntry[]; updatedAt: number };
+type TranslationSnapshot = {
+  version: number;
+  page: string;
+  language: string;
+  direction: 'ltr' | 'rtl' | 'auto';
+  entries: TextEntry[];
+  updatedAt: number;
+};
 type SnapshotStore = Record<string, TranslationSnapshot>;
 
 function isExcluded(element: Element | null): boolean {
-  return Boolean(element?.closest('script, style, noscript, textarea, input, select, button, [contenteditable="true"], [data-community-root], .community, #community, .goog-te-banner-frame'));
+  return Boolean(
+    element?.closest(
+      'script, style, noscript, textarea, input, select, button, [contenteditable="true"], [data-community-root], .community, #community, .goog-te-banner-frame',
+    ),
+  );
 }
 
 function getPageKey(): string {
@@ -79,7 +90,9 @@ function readStore(): SnapshotStore {
 
 function writeStore(store: SnapshotStore): void {
   try {
-    const entries = Object.entries(store).sort((a, b) => b[1].updatedAt - a[1].updatedAt).slice(0, MAX_ENTRIES);
+    const entries = Object.entries(store)
+      .sort((a, b) => b[1].updatedAt - a[1].updatedAt)
+      .slice(0, MAX_ENTRIES);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(Object.fromEntries(entries)));
   } catch {
     // Offline translation is an optional enhancement; storage failures must be harmless.
