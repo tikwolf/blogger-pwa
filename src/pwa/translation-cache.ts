@@ -43,7 +43,7 @@ function getPath(node: Node): string {
   const parts: number[] = [];
   let current: Node | null = node;
   while (current?.parentNode) {
-    const parent = current.parentNode;
+    const parent: Node = current.parentNode;
     parts.unshift(Array.prototype.indexOf.call(parent.childNodes, current));
     if (parent === document.body) break;
     current = parent;
