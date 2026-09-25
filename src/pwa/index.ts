@@ -51,7 +51,8 @@ if (document.readyState === 'loading') {
 if ('serviceWorker' in navigator) {
   const workbox = new Workbox(config.serviceWorker.source, { scope: config.serviceWorker.scope });
 
-  workbox.register({ immediate: true })
+  workbox
+    .register({ immediate: true })
     .then((registration) => {
       const logs: string[][] = [];
       if (registration?.scope) logs.push([`Scope: ${registration.scope}`]);
