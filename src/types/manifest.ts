@@ -378,6 +378,11 @@ export interface ShareTarget {
  * @see https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest/Reference/shortcuts
  */
 export interface Shortcut {
+  /** Browser-language-specific variants; support depends on the browser. */
+  name_localized?: Record<string, string | { value: string; lang?: string; dir?: Direction }>;
+  short_name_localized?: Record<string, string | { value: string; lang?: string; dir?: Direction }>;
+  description_localized?: Record<string, string | { value: string; lang?: string; dir?: Direction }>;
+
   /**
    * A string that represents the name of the shortcut, which is displayed to users in a context menu.
    *
@@ -424,6 +429,11 @@ export type Direction = 'auto' | 'ltr' | 'rtl';
 export type HandleLinks = 'auto' | 'preferred' | 'not-preferred';
 
 export interface Manifest {
+  /** Browser-language-specific variants; support depends on the browser. */
+  name_localized?: Record<string, string | { value: string; lang?: string; dir?: Direction }>;
+  short_name_localized?: Record<string, string | { value: string; lang?: string; dir?: Direction }>;
+  description_localized?: Record<string, string | { value: string; lang?: string; dir?: Direction }>;
+
   /**
    * The `background_color` manifest member is used to specify an initial background color for your web application. This color appears in the application window before your application's stylesheets have loaded.
    *
