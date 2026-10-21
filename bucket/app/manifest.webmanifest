@@ -115,18 +115,6 @@
       "type": "image/png",
       "sizes": "720x540",
       "form_factor": "wide"
-    },
-    {
-      "src": "screenshots/screen-wide-2.png",
-      "type": "image/png",
-      "sizes": "720x540",
-      "form_factor": "wide"
-    },
-    {
-      "src": "screenshots/screen-wide-3.png",
-      "type": "image/png",
-      "sizes": "720x540",
-      "form_factor": "wide"
     }
   ],
   "shortcuts": [
